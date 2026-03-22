@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guide de Pêche — Documentation</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0d1117;
+    --bg2: #161b22;
+    --bg3: #1e2530;
+    --border: #30363d;
+    --text: #c9d1d9;
+    --muted: #8b949e;
+    --blue: #58a6ff;
+    --teal: #3fb950;
+    --gold: #d29922;
+    --purple: #bc8cff;
+    --red: #f85149;
+    --orange: #f0883e;
+    --cyan: #39d0d8;
+    --pink: #ff7b9c;
+    --green: #3fb950;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; line-height: 1.6; }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(13,17,23,0.95); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 4px;
+    padding: 0 24px; height: 52px; flex-wrap: wrap;
+  }
+  nav .logo { font-weight: 700; color: var(--cyan); margin-right: 16px; font-size: 16px; white-space: nowrap; }
+  nav a {
+    color: var(--muted); text-decoration: none; padding: 6px 12px;
+    border-radius: 6px; font-size: 13px; transition: all .15s;
+    white-space: nowrap;
+  }
+  nav a:hover { color: var(--text); background: var(--bg3); }
+
+  /* LAYOUT */
+  .container { max-width: 1280px; margin: 0 auto; padding: 32px 24px; }
+  section { margin-bottom: 56px; }
+  h1 { font-size: 28px; color: var(--cyan); border-bottom: 2px solid var(--cyan); padding-bottom: 10px; margin-bottom: 24px; }
+  h2 { font-size: 20px; color: var(--blue); margin: 28px 0 14px; }
+  h3 { font-size: 15px; color: var(--text); margin: 16px 0 8px; font-weight: 600; }
+  p { color: var(--muted); margin-bottom: 10px; }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #0d1117 0%, #0c2040 50%, #0d1117 100%);
+    border: 1px solid var(--border); border-radius: 12px;
+    padding: 40px 32px; margin-bottom: 40px;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+  }
+  .hero h1 { border: none; padding: 0; margin: 0 0 8px; font-size: 32px; }
+  .hero p { margin: 0; font-size: 15px; }
+  .hero-stats { display: flex; gap: 20px; flex-wrap: wrap; }
+  .hero-stat { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 14px 20px; text-align: center; }
+  .hero-stat .val { font-size: 26px; font-weight: 700; color: var(--cyan); }
+  .hero-stat .lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-top: 2px; }
+
+  /* TABLES */
+  .table-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 20px; }
+  table { width: 100%; border-collapse: collapse; }
+  thead th { background: var(--bg3); color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .5px; padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background .1s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--bg3); }
+  tbody td { padding: 10px 14px; color: var(--text); vertical-align: middle; }
+  .price { font-weight: 700; }
+  .gold-val { color: var(--gold); }
+  .teal-val { color: var(--teal); }
+  .blue-val { color: var(--blue); }
+  .purple-val { color: var(--purple); }
+  .orange-val { color: var(--orange); }
+  .red-val { color: var(--red); }
+  .cyan-val { color: var(--cyan); }
+  .pink-val { color: var(--pink); }
+
+  /* BADGES */
+  .badge {
+    display: inline-block; font-size: 11px; font-weight: 600;
+    padding: 2px 8px; border-radius: 4px; white-space: nowrap;
+  }
+  .badge-blue { background: rgba(88,166,255,.15); color: var(--blue); border: 1px solid rgba(88,166,255,.3); }
+  .badge-gold { background: rgba(210,153,34,.15); color: var(--gold); border: 1px solid rgba(210,153,34,.3); }
+  .badge-teal { background: rgba(63,185,80,.15); color: var(--teal); border: 1px solid rgba(63,185,80,.3); }
+  .badge-purple { background: rgba(188,140,255,.15); color: var(--purple); border: 1px solid rgba(188,140,255,.3); }
+  .badge-red { background: rgba(248,81,73,.15); color: var(--red); border: 1px solid rgba(248,81,73,.3); }
+  .badge-orange { background: rgba(240,136,62,.15); color: var(--orange); border: 1px solid rgba(240,136,62,.3); }
+  .badge-cyan { background: rgba(57,208,216,.15); color: var(--cyan); border: 1px solid rgba(57,208,216,.3); }
+  .badge-gray { background: rgba(139,148,158,.15); color: var(--muted); border: 1px solid rgba(139,148,158,.3); }
+  .badge-pink { background: rgba(255,123,156,.15); color: var(--pink); border: 1px solid rgba(255,123,156,.3); }
+
+  /* CARDS */
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; margin-bottom: 24px; }
+  .card {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 10px;
+    padding: 18px; transition: border-color .15s;
+  }
+  .card:hover { border-color: var(--blue); }
+  .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .card-icon { font-size: 22px; }
+  .card-title { font-size: 15px; font-weight: 700; }
+  .card-sub { font-size: 12px; color: var(--muted); }
+  .card-body { font-size: 13px; }
+  .card-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid var(--border); }
+  .card-row:last-child { border-bottom: none; }
+  .card-label { color: var(--muted); }
+  .fish-list { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+
+  /* BIOME CARDS */
+  .biome-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 20px; }
+  .biome-card {
+    background: var(--bg2); border-radius: 12px; overflow: hidden;
+    border: 1px solid var(--border); transition: border-color .15s;
+  }
+  .biome-card:hover { border-color: #58a6ff44; }
+  .biome-header {
+    padding: 16px 20px; display: flex; align-items: center; gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .biome-icon { font-size: 28px; }
+  .biome-name { font-size: 16px; font-weight: 700; }
+  .biome-condition { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .biome-body { padding: 16px 20px; }
+  .fish-section { margin-bottom: 12px; }
+  .fish-section-title { font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); margin-bottom: 6px; }
+  .fish-item { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid rgba(48,54,61,.5); }
+  .fish-item:last-child { border-bottom: none; }
+  .fish-name { font-size: 13px; }
+  .fish-prices { display: flex; gap: 8px; font-size: 12px; }
+  .biome-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .biome-stat-box { background: var(--bg3); border-radius: 6px; padding: 8px; text-align: center; }
+  .biome-stat-val { font-size: 15px; font-weight: 700; }
+  .biome-stat-lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; }
+
+  /* CHARTS */
+  .charts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(500px, 1fr)); gap: 20px; margin-bottom: 24px; }
+  .chart-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
+  .chart-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 16px; }
+  .chart-box canvas { max-height: 300px; }
+
+  /* INFO BOXES */
+  .info-box {
+    background: var(--bg2); border-left: 3px solid; border-radius: 0 8px 8px 0;
+    padding: 12px 16px; margin-bottom: 14px; font-size: 13px;
+  }
+  .info-box.blue { border-color: var(--blue); }
+  .info-box.gold { border-color: var(--gold); }
+  .info-box.teal { border-color: var(--teal); }
+  .info-box.red { border-color: var(--red); }
+  .info-box.orange { border-color: var(--orange); }
+  .info-box strong { color: var(--text); }
+
+  /* ROD TIER */
+  .rod-tier { margin-bottom: 28px; }
+  .rod-tier-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+    padding: 6px 12px; border-radius: 4px; display: inline-block; margin-bottom: 12px;
+  }
+  .tier-competition { background: rgba(57,208,216,.15); color: var(--cyan); border: 1px solid rgba(57,208,216,.3); }
+  .tier-classique { background: rgba(63,185,80,.15); color: var(--teal); border: 1px solid rgba(63,185,80,.3); }
+  .tier-specialisee { background: rgba(88,166,255,.15); color: var(--blue); border: 1px solid rgba(88,166,255,.3); }
+  .tier-dimensionnelle { background: rgba(248,81,73,.15); color: var(--red); border: 1px solid rgba(248,81,73,.3); }
+
+  /* STAR SYSTEM */
+  .star-table { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0; }
+  .star-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 16px; text-align: center; }
+  .star-name { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .star-rate { font-size: 22px; font-weight: 700; margin: 8px 0; }
+  .star-sell { font-size: 12px; color: var(--muted); }
+  .star-jobs { font-size: 12px; color: var(--muted); }
+
+  /* PROGRESS BARS */
+  .bar-wrap { display: flex; align-items: center; gap: 10px; margin: 3px 0; }
+  .bar-bg { flex: 1; height: 6px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 3px; transition: width .3s; }
+  .bar-label { font-size: 12px; color: var(--muted); min-width: 50px; text-align: right; }
+
+  /* DIVIDER */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+  /* DEV NOTE */
+  .dev-note {
+    background: rgba(210,153,34,.08); border: 1px solid rgba(210,153,34,.25);
+    border-radius: 8px; padding: 12px 16px; font-size: 12px; color: var(--gold); margin-top: 8px;
+  }
+  .dev-note strong { color: var(--gold); }
+
+  /* EFFECT TAG */
+  .effect { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; padding: 2px 8px; border-radius: 4px; margin: 2px; }
+  .effect-positive { background: rgba(63,185,80,.1); color: var(--teal); border: 1px solid rgba(63,185,80,.2); }
+  .effect-negative { background: rgba(248,81,73,.1); color: var(--red); border: 1px solid rgba(248,81,73,.2); }
+  .effect-neutral { background: rgba(139,148,158,.1); color: var(--muted); border: 1px solid rgba(139,148,158,.2); }
+  .effect-special { background: rgba(188,140,255,.1); color: var(--purple); border: 1px solid rgba(188,140,255,.2); }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--border); padding: 24px; text-align: center; color: var(--muted); font-size: 12px; }
+
+  /* SCROLL */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @media (max-width: 768px) {
+    .charts-grid { grid-template-columns: 1fr; }
+    .star-table { grid-template-columns: 1fr; }
+    .hero { flex-direction: column; }
+    .biome-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="logo">&#127905; Pêche</span>
+  <a href="#cannes">Cannes</a>
+  <a href="#biomes">Biomes</a>
+  <a href="#appats">Appâts</a>
+  <a href="#sellfish">Sellfish</a>
+  <a href="#jobs">Jobs</a>
+</nav>
+
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div>
+      <h1>&#127905; Guide de Pêche</h1>
+      <p>Documentation complète — Cannes, biomes, appâts, revenus et gains Jobs.</p>
+      <p style="margin-top:6px;font-size:12px;">&#128196; Référence joueur &amp; contrôle des valeurs de développement</p>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="val">15</div><div class="lbl">Cannes</div></div>
+      <div class="hero-stat"><div class="val">7</div><div class="lbl">Biomes</div></div>
+      <div class="hero-stat"><div class="val cyan-val">11</div><div class="lbl">Appâts</div></div>
+      <div class="hero-stat"><div class="val gold-val">50+</div><div class="lbl">Poissons</div></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SECTION 1 : CANNES ═══════════════════ -->
+  <section id="cannes">
+    <h1>&#129499; Cannes à Pêche</h1>
+
+    <div class="info-box blue">
+      <strong>Système de durabilité :</strong> Chaque canne a une durabilité maximale personnalisée. La canne se casse une fois épuisée.
+      Les cannes de compétition ne peuvent <strong>pas</strong> utiliser d'appâts.
+    </div>
+
+    <!-- COMPÉTITION -->
+    <div class="rod-tier">
+      <div class="rod-tier-label tier-competition">Compétition</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Canne</th><th>Prix</th><th>Durabilité</th><th>Effets</th><th>Usage</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td><strong class="cyan-val">Canne de Compétition</strong></td>
+              <td class="price cyan-val">200 &#128178;</td>
+              <td><strong>128</strong></td>
+              <td><span class="effect effect-neutral">Aucun bonus/malus</span></td>
+              <td><span class="badge badge-cyan">Tournois officiels uniquement</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="info-box red" style="font-size:12px;">
+        <strong>Restrictions Compétition :</strong> Pêche uniquement les poissons de tournoi. Aucun déchet, aucun loot jeu de base. Les appâts sont <strong>interdits</strong>.
+      </div>
+    </div>
+
+    <!-- CLASSIQUE -->
+    <div class="rod-tier">
+      <div class="rod-tier-label tier-classique">Classique</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Canne</th><th>Prix</th><th>Durabilité</th><th>Effets</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td><strong style="color:#B87333;">Canne en Cuivre</strong></td>
+              <td class="price teal-val">1 500 &#128178;</td>
+              <td><strong>256</strong></td>
+              <td>
+                <span class="effect effect-positive">★ Argent +2</span>
+              </td>
+            </tr>
+            <tr>
+              <td><strong style="color:#C0C0C0;">Canne en Fer</strong></td>
+              <td class="price teal-val">3 000 &#128178;</td>
+              <td><strong>384</strong></td>
+              <td>
+                <span class="effect effect-positive">Attente ×0.95</span>
+                <span class="effect effect-positive">★ Argent +4</span>
+              </td>
+            </tr>
+            <tr>
+              <td><strong style="color:#FFD700;">Canne en Or</strong></td>
+              <td class="price teal-val">10 000 &#128178;</td>
+              <td><strong>512</strong></td>
+              <td>
+                <span class="effect effect-positive">★ Argent +4</span>
+                <span class="effect effect-positive">★★ Or +2</span>
+              </td>
+            </tr>
+            <tr>
+              <td><strong style="color:#00FFFF;">Canne en Diamant</strong></td>
+              <td class="price teal-val">50 000 &#128178;</td>
+              <td><strong>768</strong></td>
+              <td>
+                <span class="effect effect-positive">Attente ×0.85</span>
+                <span class="effect effect-negative">Difficulté +5</span>
+                <span class="effect effect-positive">★ Argent +5</span>
+                <span class="effect effect-positive">★★ Or +3</span>
+              </td>
+            </tr>
+            <tr>
+              <td><strong style="color:#aaaaaa;">Canne en Netherite</strong></td>
+              <td class="price teal-val">100 000 &#128178;</td>
+              <td><strong>1 024</strong></td>
+              <td>
+                <span class="effect effect-positive">Attente ×0.80</span>
+                <span class="effect effect-negative">Difficulté +10</span>
+                <span class="effect effect-positive">★ Argent +8</span>
+                <span class="effect effect-positive">★★ Or +4</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SPÉCIALISÉE -->
+    <div class="rod-tier">
+      <div class="rod-tier-label tier-specialisee">Spécialisée — Optimisée par biome</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Canne</th><th>Prix</th><th>Durabilité</th><th>Effets de base</th><th>Bonus biome ciblé</th><th>Biome optimal</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td><strong style="color:#66CDAA;">Canne en Prismarine</strong></td>
+              <td class="price blue-val">100 000 &#128178;</td>
+              <td><strong>1 024</strong></td>
+              <td>
+                <span class="effect effect-positive">Attente ×0.95</span>
+                <span class="effect effect-positive">★ Argent +3</span>
+              </td>
+              <td>
+                <span class="effect effect-positive">Océan +12</span>
+                <span class="effect effect-positive">Chaud +6</span>
+                <span class="effect effect-positive">★ Argent +8</span>
+              </td>
+              <td><span class="badge badge-blue">Océan (tous types)</span></td>
+            </tr>
+            <tr>
+              <td><strong style="color:#1C6B72;">Canne Sculk</strong></td>
+              <td class="price blue-val">250 000 &#128178;</td>
+              <td><strong>1 280</strong></td>
+              <td>
+                <span class="effect effect-positive">+6s temps jeu</span>
+              </td>
+              <td>
+                <span class="effect effect-positive">Grotte +20</span>
+                <span class="effect effect-positive">+10s bonus</span>
+                <span class="effect effect-positive">★ Argent +6</span>
+              </td>
+              <td><span class="badge badge-gray">Grotte Y&lt;0 / Océan profond</span></td>
+            </tr>
+            <tr>
+              <td><strong style="color:#7FFF00;">Canne Visqueuse</strong></td>
+              <td class="price blue-val">100 000 &#128178;</td>
+              <td><strong>1 024</strong></td>
+              <td>
+                <span class="effect effect-positive">Taille ×1.2</span>
+                <span class="effect effect-positive">Attente ×0.97</span>
+              </td>
+              <td>
+                <span class="effect effect-positive">Marais +20</span>
+                <span class="effect effect-positive">Taille ×1.6</span>
+                <span class="effect effect-positive">★ Argent +5</span>
+              </td>
+              <td><span class="badge badge-teal">Marais</span></td>
+            </tr>
+            <tr>
+              <td><strong style="color:#9B59B6;">Canne en Améthyste</strong></td>
+              <td class="price blue-val">500 000 &#128178;</td>
+              <td><strong>1 600</strong></td>
+              <td>
+                <span class="effect effect-positive">★ Argent +5</span>
+              </td>
+              <td>
+                <span class="effect effect-positive">Océan +20</span>
+                <span class="effect effect-positive">★ Argent +15</span>
+              </td>
+              <td><span class="badge badge-blue">Océan froid / Gelé</span></td>
+            </tr>
+            <tr>
+              <td><strong style="color:#FF7F7F;">Canne en Corail</strong></td>
+              <td class="price blue-val">500 000 &#128178;</td>
+              <td><strong>1 600</strong></td>
+              <td>
+                <span class="effect effect-positive">Attente ×0.95</span>
+                <span class="effect effect-positive">★ Argent +2</span>
+              </td>
+              <td>
+                <span class="effect effect-positive">Chaud +20</span>
+                <span class="effect effect-positive">Attente ×0.75</span>
+                <span class="effect effect-positive">★★ Or +2</span>
+              </td>
+              <td><span class="badge badge-orange">Océan chaud / tiède</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- DIMENSIONNELLE -->
+    <div class="rod-tier">
+      <div class="rod-tier-label tier-dimensionnelle">Dimensionnelle — Dimensions hostiles</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Canne</th><th>Prix</th><th>Durabilité</th><th>Effets</th><th>Environnement</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td><strong style="color:#8B0000;">Canne du Nether</strong></td>
+              <td class="price red-val">500 000 &#128178;</td>
+              <td><strong>1 600</strong></td>
+              <td>
+                <span class="effect effect-special">Pêche en lave</span>
+                <span class="effect effect-positive">★ Argent +6</span>
+              </td>
+              <td><span class="badge badge-red">Lave (Nether)</span></td>
+            </tr>
+            <tr>
+              <td><strong style="color:#FF4500;">Canne de Magma</strong></td>
+              <td class="price red-val">750 000 &#128178;</td>
+              <td><strong>2 048</strong></td>
+              <td>
+                <span class="effect effect-special">Pêche en lave</span>
+                <span class="effect effect-positive">★ Argent +8</span>
+                <span class="effect effect-positive">★★ Or +4</span>
+              </td>
+              <td><span class="badge badge-red">Lave (Nether)</span></td>
+            </tr>
+            <tr>
+              <td><strong style="color:#9400D3;">Canne de l'End</strong></td>
+              <td class="price red-val">1 000 000 &#128178;</td>
+              <td><strong>2 560</strong></td>
+              <td>
+                <span class="effect effect-special">Pêche dans le vide</span>
+                <span class="effect effect-negative">Déchets uniquement hors vide</span>
+                <span class="effect effect-positive">★★ Or +7 (End uniquement)</span>
+              </td>
+              <td><span class="badge badge-purple">Vide (End)</span></td>
+            </tr>
+            <tr>
+              <td><strong style="color:#FF6600;">Canne en Fusion</strong></td>
+              <td class="price red-val">3 000 000 &#128178;</td>
+              <td><strong>4 096</strong></td>
+              <td>
+                <span class="effect effect-special">Pêche en lave</span>
+                <span class="effect effect-special">Pêche dans le vide</span>
+                <span class="effect effect-positive">Attente ×0.80</span>
+                <span class="effect effect-positive">★ Argent +10</span>
+                <span class="effect effect-positive">★★ Or +6</span>
+              </td>
+              <td><span class="badge badge-orange">Eau · Lave · Vide</span></td>
+            </tr>
+            <tr>
+              <td><strong style="color:#8A2BE2;">Canne en Gemme</strong></td>
+              <td class="price red-val">10 000 000 &#128178;</td>
+              <td><strong>6 400</strong></td>
+              <td>
+                <span class="effect effect-special">Pêche dans le vide</span>
+                <span class="effect effect-special">Trésors +500</span>
+                <span class="effect effect-special">Coeur mer +200</span>
+                <span class="effect effect-negative">Aucun poisson</span>
+              </td>
+              <td><span class="badge badge-purple">Eau · Vide (End)</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="info-box orange" style="font-size:12px;">
+        <strong>Canne en Gemme :</strong> Ne capture <strong>aucun poisson</strong>. Exclusivement trésors jeu de base (étiquette, selle, nautile, arc enchanté...) + Coeur de la mer. Idéale pour les trésors en océan et dans l'End.
+      </div>
+      <div class="info-box red" style="font-size:12px;">
+        <strong>Canne de l'End :</strong> Dans l'eau normale, elle ne capture que des <strong>déchets</strong> (bâton, algues, vêtements...) — tous les poissons sont supprimés.
+        Les poissons du vide (Crevette Biscornue, Poisson Bulle Cramoisi) et le bonus ★★ Or +7 ne s'activent <strong>qu'en pêchant dans le vide de l'End</strong>.
+      </div>
+    </div>
+
+    <!-- Dev note cannes -->
+    <div class="dev-note">
+      <strong>&#128295; Référence développement :</strong> Les effets <code>group-mod</code> modifient les poids de tirage par groupe (silver_star, golden_star, ocean, etc.).
+      <code>wait-time-multiplier</code> &lt; 1 = attente plus courte. <code>lava-fishing</code> / <code>void-fishing</code> = capacité exclusive.
+      La difficulté affecte le mini-jeu de pêche (plus difficile = fail plus fréquent mais poissons étoile plus gros si réussi).
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ═══════════════════ SECTION 2 : BIOMES ═══════════════════ -->
+  <section id="biomes">
+    <h1>&#127757; Guide des Biomes</h1>
+
+    <!-- SYSTÈME D'ÉTOILES -->
+    <h2>Système d'Étoiles (poissons jeu de base uniquement)</h2>
+    <div class="star-table">
+      <div class="star-box" style="border-color:rgba(139,148,158,.4);">
+        <div class="star-name" style="color:var(--text);">&#9679; Normal</div>
+        <div class="star-rate" style="color:var(--muted);">~79%</div>
+        <div class="star-sell">Sellfish × 1.0</div>
+        <div class="star-jobs" style="margin-top:4px;">Jobs × 1.0</div>
+      </div>
+      <div class="star-box" style="border-color:rgba(192,192,192,.4);">
+        <div class="star-name" style="color:#C0C0C0;">&#11088; Argent</div>
+        <div class="star-rate" style="color:#C0C0C0;">~16%</div>
+        <div class="star-sell" style="color:var(--muted);">Sellfish × 2.0</div>
+        <div class="star-jobs" style="margin-top:4px; color:var(--muted);">Jobs × 2.0</div>
+      </div>
+      <div class="star-box" style="border-color:rgba(255,215,0,.4);">
+        <div class="star-name" style="color:var(--gold);">&#11088;&#11088; Or</div>
+        <div class="star-rate" style="color:var(--gold);">~5%</div>
+        <div class="star-sell" style="color:var(--muted);">Sellfish × 4.0</div>
+        <div class="star-jobs" style="margin-top:4px; color:var(--muted);">Jobs × 4.0</div>
+      </div>
+    </div>
+    <div class="info-box blue" style="font-size:12px;">
+      Les poissons du <strong>fishing_pack</strong> (Dorade, Truite, Méduse...) n'existent qu'en variante normale (●). Pas de variantes étoiles.
+    </div>
+
+    <!-- BIOMES -->
+    <div class="biome-grid">
+
+      <!-- RIVIÈRE -->
+      <div class="biome-card">
+        <div class="biome-header" style="background:linear-gradient(90deg,rgba(0,100,200,.15),transparent);">
+          <div class="biome-icon">&#127754;</div>
+          <div>
+            <div class="biome-name" style="color:var(--blue);">Rivière</div>
+            <div class="biome-condition">Tout biome eau douce hors océan</div>
+          </div>
+        </div>
+        <div class="biome-body">
+          <div class="fish-section">
+            <div class="fish-section-title">Poissons jeu de base &#11088;/&#11088;&#11088;</div>
+            <div class="fish-item"><span class="fish-name">Poisson Rouge</span><span class="fish-prices"><span style="color:var(--muted);">50</span> / <span style="color:#C0C0C0;">100</span> / <span style="color:var(--gold);">200</span> &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name">Perche</span><span class="fish-prices"><span style="color:var(--muted);">50</span> / <span style="color:#C0C0C0;">100</span> / <span style="color:var(--gold);">200</span> &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name">Mulet</span><span class="fish-prices"><span style="color:var(--muted);">50</span> / <span style="color:#C0C0C0;">100</span> / <span style="color:var(--gold);">200</span> &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name">Carpe</span><span class="fish-prices"><span style="color:var(--muted);">50</span> / <span style="color:#C0C0C0;">100</span> / <span style="color:var(--gold);">200</span> &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name">Poisson-chat</span><span class="fish-prices"><span style="color:var(--muted);">50</span> / <span style="color:#C0C0C0;">100</span> / <span style="color:var(--gold);">200</span> &#128178;</span></div>
+          </div>
+          <div class="fish-section">
+            <div class="fish-section-title">Poissons fishing_pack &#9679;</div>
+            <div class="fish-item"><span class="fish-name" style="color:#90EE90;">Truite</span><span style="color:var(--muted);font-size:12px;">100 &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name" style="color:#3CB371;">Poisson Vert</span><span style="color:var(--muted);font-size:12px;">100 &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name" style="color:#FFB6C1;">Barbus Rosé</span><span style="color:var(--muted);font-size:12px;">100 &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name" style="color:#228B22;">Barbus Vert</span><span style="color:var(--muted);font-size:12px;">100 &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name" style="color:#ADD8E6;">Poisson Bulle</span><span style="color:var(--muted);font-size:12px;">110 &#128178;</span></div>
+          </div>
+          <div class="fish-section">
+            <div class="fish-section-title">Spécial</div>
+            <div class="fish-item"><span class="fish-name" style="color:var(--purple);">Poisson Arc-en-Ciel</span><span style="color:var(--purple);font-size:12px;">130 &#128178;</span></div>
+          </div>
+          <div class="biome-stats">
+            <div class="biome-stat-box"><div class="biome-stat-val" style="color:var(--teal);">128</div><div class="biome-stat-lbl">Jobs/prise</div></div>
+            <div class="biome-stat-box"><div class="biome-stat-val" style="color:var(--blue);">50</div><div class="biome-stat-lbl">Sellfish</div></div>
+            <div class="biome-stat-box"><div class="biome-stat-val" style="color:var(--muted);">★★ 200</div><div class="biome-stat-lbl">Max sell</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OCÉAN -->
+      <div class="biome-card">
+        <div class="biome-header" style="background:linear-gradient(90deg,rgba(0,50,150,.2),transparent);">
+          <div class="biome-icon">&#127754;</div>
+          <div>
+            <div class="biome-name" style="color:#4169E1;">Océan</div>
+            <div class="biome-condition">ocean · deep_ocean · cold · frozen · lukewarm_ocean</div>
+          </div>
+        </div>
+        <div class="biome-body">
+          <div class="fish-section">
+            <div class="fish-section-title">Poissons jeu de base &#11088;/&#11088;&#11088;</div>
+            <div class="fish-item"><span class="fish-name">Thon (jeu de base)</span><span class="fish-prices"><span style="color:var(--muted);">75</span> / <span style="color:#C0C0C0;">150</span> / <span style="color:var(--gold);">300</span> &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name">Brochet</span><span class="fish-prices"><span style="color:var(--muted);">75</span> / <span style="color:#C0C0C0;">150</span> / <span style="color:var(--gold);">300</span> &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name">Sardine</span><span class="fish-prices"><span style="color:var(--muted);">75</span> / <span style="color:#C0C0C0;">150</span> / <span style="color:var(--gold);">300</span> &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name">Pieuvre</span><span class="fish-prices"><span style="color:var(--muted);">75</span> / <span style="color:#C0C0C0;">150</span> / <span style="color:var(--gold);">300</span> &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name">Poisson Lune (jdB)</span><span class="fish-prices"><span style="color:var(--muted);">75</span> / <span style="color:#C0C0C0;">150</span> / <span style="color:var(--gold);">300</span> &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name">Vivaneau Rouge</span><span class="fish-prices"><span style="color:var(--muted);">75</span> / <span style="color:#C0C0C0;">150</span> / <span style="color:var(--gold);">300</span> &#128178;</span></div>
+          </div>
+          <div class="fish-section">
+            <div class="fish-section-title">Poissons fishing_pack &#9679;</div>
+            <div class="fish-item"><span class="fish-name" style="color:#87CEEB;">Dorade</span><span style="color:var(--muted);font-size:12px;">100 &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name" style="color:#4169E1;">Anguille Bleue</span><span style="color:var(--muted);font-size:12px;">120 &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name" style="color:#6495ED;">Grenadier Bleu</span><span style="color:var(--muted);font-size:12px;">110 &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name" style="color:#708090;">Raie</span><span style="color:var(--muted);font-size:12px;">130 &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name" style="color:#4682B4;">Thon</span><span style="color:var(--muted);font-size:12px;">115 &#128178;</span></div>
+          </div>
+          <div class="biome-stats">
+            <div class="biome-stat-box"><div class="biome-stat-val" style="color:var(--teal);">188</div><div class="biome-stat-lbl">Jobs/prise</div></div>
+            <div class="biome-stat-box"><div class="biome-stat-val" style="color:var(--blue);">75</div><div class="biome-stat-lbl">Sellfish</div></div>
+            <div class="biome-stat-box"><div class="biome-stat-val" style="color:var(--muted);">★★ 300</div><div class="biome-stat-lbl">Max sell</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OCÉAN CHAUD -->
+      <div class="biome-card">
+        <div class="biome-header" style="background:linear-gradient(90deg,rgba(255,160,0,.1),transparent);">
+          <div class="biome-icon">&#127981;</div>
+          <div>
+            <div class="biome-name" style="color:#FFA500;">Océan Chaud</div>
+            <div class="biome-condition">warm_ocean · lukewarm_ocean · deep_lukewarm_ocean</div>
+          </div>
+        </div>
+        <div class="biome-body">
+          <div class="fish-section">
+            <div class="fish-section-title">Poissons jeu de base &#11088;/&#11088;&#11088;</div>
+            <div class="fish-item"><span class="fish-name">Méduse Bleue</span><span class="fish-prices"><span style="color:var(--muted);">100</span> / <span style="color:#C0C0C0;">200</span> / <span style="color:var(--gold);">400</span> &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name">Méduse Rose</span><span class="fish-prices"><span style="color:var(--muted);">100</span> / <span style="color:#C0C0C0;">200</span> / <span style="color:var(--gold);">400</span> &#128178;</span></div>
+          </div>
+          <div class="fish-section">
+            <div class="fish-section-title">Poissons fishing_pack &#9679;</div>
+            <div class="fish-item"><span class="fish-name" style="color:#DDA0DD;">Méduse</span><span style="color:var(--muted);font-size:12px;">200 &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name" style="color:#FF8C69;">Étoile de Mer</span><span style="color:var(--muted);font-size:12px;">220 &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name" style="color:#FFA07A;">Crevette</span><span style="color:var(--muted);font-size:12px;">180 &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name" style="color:#FF6347;">Poisson Corail</span><span style="color:var(--muted);font-size:12px;">200 &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name" style="color:#40E0D0;">Chromis</span><span style="color:var(--muted);font-size:12px;">190 &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name" style="color:#FF69B4;">Anthias</span><span style="color:var(--muted);font-size:12px;">210 &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name" style="color:#FFD700;">Poisson Lune</span><span style="color:var(--muted);font-size:12px;">250 &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name" style="color:#F5F5F5;">Perle</span><span style="color:var(--gold);font-size:12px;font-weight:700;">2 000 &#128178;</span></div>
+          </div>
+          <div class="biome-stats">
+            <div class="biome-stat-box"><div class="biome-stat-val" style="color:var(--teal);">248</div><div class="biome-stat-lbl">Jobs/prise</div></div>
+            <div class="biome-stat-box"><div class="biome-stat-val" style="color:var(--blue);">100</div><div class="biome-stat-lbl">Sellfish</div></div>
+            <div class="biome-stat-box"><div class="biome-stat-val" style="color:var(--muted);">★★ 400</div><div class="biome-stat-lbl">Max sell</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MARAIS -->
+      <div class="biome-card">
+        <div class="biome-header" style="background:linear-gradient(90deg,rgba(0,100,0,.2),transparent);">
+          <div class="biome-icon">&#127807;</div>
+          <div>
+            <div class="biome-name" style="color:#3CB371;">Marais</div>
+            <div class="biome-condition">swamp · mangrove_swamp — Poissons rivière aussi présents</div>
+          </div>
+        </div>
+        <div class="biome-body">
+          <div class="fish-section">
+            <div class="fish-section-title">Exclusif jeu de base &#11088;/&#11088;&#11088;</div>
+            <div class="fish-item"><span class="fish-name">Bois-Sauteur</span><span class="fish-prices"><span style="color:var(--muted);">120</span> / <span style="color:#C0C0C0;">240</span> / <span style="color:var(--gold);">480</span> &#128178;</span></div>
+          </div>
+          <div class="fish-section">
+            <div class="fish-section-title">Exclusif fishing_pack &#9679;</div>
+            <div class="fish-item"><span class="fish-name" style="color:#7FFF00;">Poisson Visqueux</span><span style="color:var(--muted);font-size:12px;">250 &#128178;</span></div>
+          </div>
+          <div class="fish-section">
+            <div class="fish-section-title">Communs</div>
+            <div class="fish-item"><span class="fish-name" style="color:var(--muted);">+ tous les poissons de Rivière</span></div>
+          </div>
+          <div class="biome-stats">
+            <div class="biome-stat-box"><div class="biome-stat-val" style="color:var(--teal);">300</div><div class="biome-stat-lbl">Jobs/prise</div></div>
+            <div class="biome-stat-box"><div class="biome-stat-val" style="color:var(--blue);">120</div><div class="biome-stat-lbl">Sellfish</div></div>
+            <div class="biome-stat-box"><div class="biome-stat-val" style="color:var(--muted);">★★ 480</div><div class="biome-stat-lbl">Max sell</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GROTTE -->
+      <div class="biome-card">
+        <div class="biome-header" style="background:linear-gradient(90deg,rgba(50,50,50,.4),transparent);">
+          <div class="biome-icon">&#9968;</div>
+          <div>
+            <div class="biome-name" style="color:#aaaaaa;">Grotte</div>
+            <div class="biome-condition">Eau douce en dessous de Y = 0</div>
+          </div>
+        </div>
+        <div class="biome-body">
+          <div class="fish-section">
+            <div class="fish-section-title">Poissons jeu de base &#11088;/&#11088;&#11088;</div>
+            <div class="fish-item"><span class="fish-name">Esturgeon</span><span class="fish-prices"><span style="color:var(--muted);">200</span> / <span style="color:#C0C0C0;">400</span> / <span style="color:var(--gold);">800</span> &#128178;</span></div>
+          </div>
+          <div class="fish-section">
+            <div class="fish-section-title">Poissons fishing_pack &#9679;</div>
+            <div class="fish-item"><span class="fish-name" style="color:#E0FFFF;">Poisson des Glaces</span><span style="color:var(--blue);font-size:12px;font-weight:700;">1 000 &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name" style="color:#9400D3;">Poisson Gemme</span><span style="color:var(--purple);font-size:12px;font-weight:700;">1 500 &#128178;</span></div>
+          </div>
+          <div class="biome-stats">
+            <div class="biome-stat-box"><div class="biome-stat-val" style="color:var(--teal);">500</div><div class="biome-stat-lbl">Jobs/prise</div></div>
+            <div class="biome-stat-box"><div class="biome-stat-val" style="color:var(--blue);">200</div><div class="biome-stat-lbl">Sellfish</div></div>
+            <div class="biome-stat-box"><div class="biome-stat-val" style="color:var(--muted);">★★ 800</div><div class="biome-stat-lbl">Max sell</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LAVE -->
+      <div class="biome-card">
+        <div class="biome-header" style="background:linear-gradient(90deg,rgba(200,50,0,.2),transparent);">
+          <div class="biome-icon">&#128293;</div>
+          <div>
+            <div class="biome-name" style="color:#FF4500;">Lave / Nether</div>
+            <div class="biome-condition">Pêche dans la lave — Nether · Requiert canne lave</div>
+          </div>
+        </div>
+        <div class="biome-body">
+          <div class="fish-section">
+            <div class="fish-section-title">Poissons jeu de base &#11088;/&#11088;&#11088;</div>
+            <div class="fish-item"><span class="fish-name">Saumon du Vide</span><span class="fish-prices"><span style="color:var(--muted);">290</span> / <span style="color:#C0C0C0;">580</span> / <span style="color:var(--gold);">1 150</span> &#128178;</span></div>
+          </div>
+          <div class="fish-section">
+            <div class="fish-section-title">Poissons fishing_pack &#9679;</div>
+            <div class="fish-item"><span class="fish-name" style="color:#FF4500;">Truite de Magma</span><span style="color:var(--muted);font-size:12px;">500 &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name" style="color:#FF6600;">Poisson Corail en Fusion</span><span style="color:var(--muted);font-size:12px;">550 &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name" style="color:#1C1C1C;text-shadow:0 0 4px #fff8;">Poisson d'Obsidienne</span><span style="color:var(--muted);font-size:12px;">600 &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name" style="color:#FF2400;">Anthias de Lave</span><span style="color:var(--muted);font-size:12px;">700 &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name" style="color:#FF3300;">Anguille de Feu</span><span style="color:var(--orange);font-size:12px;font-weight:700;">800 &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name" style="color:#FFD700;">Méduse Dorée</span><span style="color:var(--gold);font-size:12px;font-weight:700;">2 000 &#128178;</span></div>
+          </div>
+          <div class="biome-stats">
+            <div class="biome-stat-box"><div class="biome-stat-val" style="color:var(--teal);">720</div><div class="biome-stat-lbl">Jobs/prise</div></div>
+            <div class="biome-stat-box"><div class="biome-stat-val" style="color:var(--blue);">290</div><div class="biome-stat-lbl">Sellfish</div></div>
+            <div class="biome-stat-box"><div class="biome-stat-val" style="color:var(--muted);">★★ 1150</div><div class="biome-stat-lbl">Max sell</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIDE -->
+      <div class="biome-card">
+        <div class="biome-header" style="background:linear-gradient(90deg,rgba(100,0,180,.2),transparent);">
+          <div class="biome-icon">&#127756;</div>
+          <div>
+            <div class="biome-name" style="color:#BC8CFF;">Vide / End</div>
+            <div class="biome-condition">Pêche dans le vide — End · Requiert canne void</div>
+          </div>
+        </div>
+        <div class="biome-body">
+          <div class="fish-section">
+            <div class="fish-section-title">Poissons fishing_pack &#9679; uniquement</div>
+            <div class="fish-item"><span class="fish-name" style="color:#DC143C;">Poisson Bulle Cramoisi</span><span style="color:var(--purple);font-size:12px;font-weight:700;">4 000 &#128178;</span></div>
+            <div class="fish-item"><span class="fish-name" style="color:#00FA9A;">Crevette Biscornue</span><span style="color:var(--purple);font-size:12px;font-weight:700;">5 000 &#128178;</span></div>
+          </div>
+          <div class="fish-section">
+            <div class="fish-section-title">Trésors (canne gemme)</div>
+            <div class="fish-item"><span class="fish-name" style="color:var(--muted);">Étiquette · Selle · Nautile · Arc enchanté</span></div>
+            <div class="fish-item"><span class="fish-name" style="color:var(--cyan);">Coeur de la Mer</span><span style="color:var(--cyan);font-size:12px;font-weight:700;">800 &#128178;</span></div>
+          </div>
+          <div class="biome-stats">
+            <div class="biome-stat-box"><div class="biome-stat-val" style="color:var(--teal);">1 400+</div><div class="biome-stat-lbl">Jobs/prise</div></div>
+            <div class="biome-stat-box"><div class="biome-stat-val" style="color:var(--blue);">4 000</div><div class="biome-stat-lbl">Sellfish min</div></div>
+            <div class="biome-stat-box"><div class="biome-stat-val" style="color:var(--purple);">5 000</div><div class="biome-stat-lbl">Sellfish max</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /biome-grid -->
+
+    <!-- Spéciaux -->
+    <h2>Loots Spéciaux</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Item</th><th>Conditions</th><th>Sellfish</th><th>Jobs</th><th>Rareté</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong style="color:var(--purple);">Poisson Arc-en-Ciel</strong></td>
+            <td>Eau douce (hors océan)</td>
+            <td class="price purple-val">130 &#128178;</td>
+            <td>320 &#128178; / 200 XP</td>
+            <td><span class="badge badge-purple">Rare</span></td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--cyan);">Coeur de la Mer</strong></td>
+            <td>Toutes eaux — très rare</td>
+            <td class="price cyan-val">800 &#128178;</td>
+            <td>2 000 &#128178; / 1 250 XP</td>
+            <td><span class="badge badge-cyan">Très rare</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ═══════════════════ SECTION 3 : APPÂTS ═══════════════════ -->
+  <section id="appats">
+    <h1>&#127907; Appâts</h1>
+
+    <div class="info-box red">
+      <strong>Restriction :</strong> Les appâts sont <strong>interdits</strong> avec la Canne de Compétition.
+      Tous les autres cannes acceptent les appâts.
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Appât</th><th>Type</th><th>Effets</th><th>Note</th>
+        </tr></thead>
+        <tbody>
+          <!-- Basiques -->
+          <tr>
+            <td><strong style="color:#00BFFF;">Appâts Simples</strong></td>
+            <td><span class="badge badge-gray">Basique</span></td>
+            <td><span class="effect effect-positive">Difficulté -10</span></td>
+            <td>Mini-jeu plus facile</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#ff6666;">Appâts Magnétiques</strong></td>
+            <td><span class="badge badge-gray">Basique</span></td>
+            <td>
+              <span class="effect effect-positive">Attente ×0.90</span>
+              <span class="effect effect-positive">+2s temps jeu</span>
+            </td>
+            <td>Pêche plus rapide</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#2E8B57;">Appâts Sauvages</strong></td>
+            <td><span class="badge badge-gray">Basique</span></td>
+            <td>
+              <span class="effect effect-negative">Difficulté +20</span>
+              <span class="effect effect-positive">Taille ×1.5</span>
+              <span class="effect effect-negative">-2s temps jeu</span>
+            </td>
+            <td>Gros poissons, mini-jeu difficile</td>
+          </tr>
+          <!-- Pack -->
+          <tr>
+            <td><strong style="color:#A0522D;">Ver de Terre</strong></td>
+            <td><span class="badge badge-teal">Fishing Pack</span></td>
+            <td><span class="effect effect-positive">Attente ×0.92</span></td>
+            <td>Eau douce recommandé</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#FFD700;">Maïs</strong></td>
+            <td><span class="badge badge-teal">Fishing Pack</span></td>
+            <td><span class="effect effect-positive">Difficulté -8</span></td>
+            <td>Rivière / étang</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#DDA0DD;">Tentacule de Méduse</strong></td>
+            <td><span class="badge badge-teal">Fishing Pack</span></td>
+            <td><span class="effect effect-positive">Océan chaud +8</span></td>
+            <td>Plus d'espèces tropicales</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#F5DEB3;">Boulettes de Pâte</strong></td>
+            <td><span class="badge badge-teal">Fishing Pack</span></td>
+            <td><span class="effect effect-positive">Taille ×1.2</span></td>
+            <td>Augmente la taille des prises</td>
+          </tr>
+          <!-- Qualité -->
+          <tr style="background:rgba(139,148,158,.04);">
+            <td><strong style="color:#A9A9A9;">Appât Commun</strong></td>
+            <td><span class="badge badge-blue">Qualité</span></td>
+            <td><span class="effect effect-positive">★ Argent +3</span></td>
+            <td></td>
+          </tr>
+          <tr style="background:rgba(65,105,225,.04);">
+            <td><strong style="color:#4169E1;">Appât Rare</strong></td>
+            <td><span class="badge badge-blue">Qualité</span></td>
+            <td>
+              <span class="effect effect-positive">★ Argent +6</span>
+              <span class="effect effect-positive">Attente ×0.95</span>
+            </td>
+            <td></td>
+          </tr>
+          <tr style="background:rgba(148,0,211,.04);">
+            <td><strong style="color:#9400D3;">Appât Épique</strong></td>
+            <td><span class="badge badge-purple">Qualité</span></td>
+            <td>
+              <span class="effect effect-positive">★ Argent +8</span>
+              <span class="effect effect-positive">★★ Or +3</span>
+              <span class="effect effect-positive">Attente ×0.90</span>
+            </td>
+            <td></td>
+          </tr>
+          <tr style="background:rgba(255,140,0,.04);">
+            <td><strong style="color:#FF8C00;">Appât Légendaire</strong></td>
+            <td><span class="badge badge-gold">Qualité</span></td>
+            <td>
+              <span class="effect effect-positive">★ Argent +10</span>
+              <span class="effect effect-positive">★★ Or +6</span>
+              <span class="effect effect-positive">Attente ×0.80</span>
+              <span class="effect effect-positive">Taille ×1.3</span>
+            </td>
+            <td>Appât ultime</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Graphique comparatif appâts qualité -->
+    <div class="charts-grid" style="margin-top:20px;">
+      <div class="chart-box">
+        <div class="chart-title">Bonus étoiles par appât de qualité</div>
+        <canvas id="chartBait"></canvas>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">Réduction temps d'attente par appât (%)</div>
+        <canvas id="chartBaitTime"></canvas>
+      </div>
+    </div>
+
+    <div class="dev-note">
+      <strong>&#128295; Note dev :</strong> Les effets <code>group-mod silver_star:+N</code> et <code>golden_star:+N</code> s'additionnent avec les effets de la canne équipée.
+      Ex : Netherite (+8★) + Légendaire (+10★) = +18★ argent cumulé.
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ═══════════════════ SECTION 4 : SELLFISH ═══════════════════ -->
+  <section id="sellfish">
+    <h1>&#128178; Valeurs Sellfish</h1>
+
+    <div class="info-box teal">
+      <strong>Commande :</strong> <code>/sellfish</code> — Vend les poissons dans l'inventaire au prix configuré.
+      Les variantes étoiles valent <strong>×2 (argenté)</strong> et <strong>×4 (doré)</strong> par rapport au normal.
+    </div>
+    <div class="info-box gold">
+      <strong>Limite quotidienne :</strong> Maximum <strong>100 000 :moneyicon:</strong> de gains par jour via le marché aux poissons.
+      Au-delà de cette limite, les ventes sont refusées jusqu'à la réinitialisation journalière.
+    </div>
+
+    <!-- Graphique sellfish -->
+    <div class="charts-grid">
+      <div class="chart-box">
+        <div class="chart-title">Prix sellfish par biome — Variantes Normal / ★ / ★★ (jeu de base)</div>
+        <canvas id="chartSellfish"></canvas>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">Poissons fishing_pack — Prix sellfish par biome</div>
+        <canvas id="chartSellfishPack"></canvas>
+      </div>
+    </div>
+
+    <!-- Tableau sellfish jeu de base -->
+    <h2>Poissons Jeu de Base</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Biome</th><th>Espèces</th><th>Normal &#9679;</th><th>Argenté &#11088;</th><th>Doré &#11088;&#11088;</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-blue">Rivière</span></td>
+            <td style="color:var(--muted);font-size:12px;">Poisson Rouge · Perche · Mulet · Carpe · Poisson-chat</td>
+            <td class="price">50 &#128178;</td>
+            <td class="price" style="color:#C0C0C0;">100 &#128178;</td>
+            <td class="price gold-val">200 &#128178;</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-blue">Océan</span></td>
+            <td style="color:var(--muted);font-size:12px;">Thon · Brochet · Sardine · Pieuvre · Poisson Lune · Vivaneau</td>
+            <td class="price">75 &#128178;</td>
+            <td class="price" style="color:#C0C0C0;">150 &#128178;</td>
+            <td class="price gold-val">300 &#128178;</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-orange">Océan chaud</span></td>
+            <td style="color:var(--muted);font-size:12px;">Méduse Bleue · Méduse Rose</td>
+            <td class="price">100 &#128178;</td>
+            <td class="price" style="color:#C0C0C0;">200 &#128178;</td>
+            <td class="price gold-val">400 &#128178;</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-teal">Marais</span></td>
+            <td style="color:var(--muted);font-size:12px;">Bois-Sauteur</td>
+            <td class="price">120 &#128178;</td>
+            <td class="price" style="color:#C0C0C0;">240 &#128178;</td>
+            <td class="price gold-val">480 &#128178;</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-gray">Grotte</span></td>
+            <td style="color:var(--muted);font-size:12px;">Esturgeon</td>
+            <td class="price">200 &#128178;</td>
+            <td class="price" style="color:#C0C0C0;">400 &#128178;</td>
+            <td class="price gold-val">800 &#128178;</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-red">Lave</span></td>
+            <td style="color:var(--muted);font-size:12px;">Saumon du Vide</td>
+            <td class="price">290 &#128178;</td>
+            <td class="price" style="color:#C0C0C0;">580 &#128178;</td>
+            <td class="price gold-val">1 150 &#128178;</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Tableau sellfish fishing_pack -->
+    <h2>Poissons Fishing Pack (normal uniquement)</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Biome</th><th>Poisson</th><th>Prix</th><th>Bonus taille (par cm)</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="5"><span class="badge badge-blue">Rivière</span></td>
+            <td>Truite · Poisson Vert · Barbus Rosé · Barbus Vert</td><td class="price">100 &#128178;</td><td style="color:var(--muted);">+3–6/cm</td></tr>
+          <tr><td>Poisson Bulle</td><td class="price">110 &#128178;</td><td style="color:var(--muted);">+12/cm</td></tr>
+          <tr><td colspan="2" style="display:none;"></td></tr>
+          <tr><td colspan="2" style="display:none;"></td></tr>
+          <tr><td colspan="2" style="display:none;"></td></tr>
+          <tr><td rowspan="5"><span class="badge badge-blue">Océan</span></td>
+            <td>Dorade</td><td class="price">100 &#128178;</td><td style="color:var(--muted);">+3/cm</td></tr>
+          <tr><td>Grenadier Bleu</td><td class="price">110 &#128178;</td><td style="color:var(--muted);">+2/cm</td></tr>
+          <tr><td>Thon</td><td class="price">115 &#128178;</td><td style="color:var(--muted);">+2/cm</td></tr>
+          <tr><td>Anguille Bleue</td><td class="price">120 &#128178;</td><td style="color:var(--muted);">+2/cm</td></tr>
+          <tr><td>Raie</td><td class="price">130 &#128178;</td><td style="color:var(--muted);">+1/cm</td></tr>
+          <tr><td rowspan="8"><span class="badge badge-orange">Océan chaud</span></td>
+            <td>Crevette</td><td class="price">180 &#128178;</td><td style="color:var(--muted);">+18/cm</td></tr>
+          <tr><td>Méduse</td><td class="price">200 &#128178;</td><td style="color:var(--muted);">+15/cm</td></tr>
+          <tr><td>Poisson Corail</td><td class="price">200 &#128178;</td><td style="color:var(--muted);">+10/cm</td></tr>
+          <tr><td>Chromis</td><td class="price">190 &#128178;</td><td style="color:var(--muted);">+12/cm</td></tr>
+          <tr><td>Anthias</td><td class="price">210 &#128178;</td><td style="color:var(--muted);">+8/cm</td></tr>
+          <tr><td>Étoile de Mer</td><td class="price">220 &#128178;</td><td style="color:var(--muted);">+10/cm</td></tr>
+          <tr><td>Poisson Lune</td><td class="price">250 &#128178;</td><td style="color:var(--muted);">+2/cm</td></tr>
+          <tr><td style="color:var(--gold);font-weight:700;">Perle</td><td class="price gold-val">2 000 &#128178;</td><td style="color:var(--gold);">+500/cm</td></tr>
+          <tr><td><span class="badge badge-teal">Marais</span></td>
+            <td>Poisson Visqueux</td><td class="price">250 &#128178;</td><td style="color:var(--muted);">+10/cm</td></tr>
+          <tr><td rowspan="2"><span class="badge badge-gray">Grotte</span></td>
+            <td>Poisson des Glaces</td><td class="price blue-val">1 000 &#128178;</td><td style="color:var(--muted);">+40/cm</td></tr>
+          <tr><td style="color:var(--purple);">Poisson Gemme</td><td class="price purple-val">1 500 &#128178;</td><td style="color:var(--muted);">+50/cm</td></tr>
+          <tr><td rowspan="6"><span class="badge badge-red">Lave</span></td>
+            <td>Truite de Magma</td><td class="price">500 &#128178;</td><td style="color:var(--muted);">+10/cm</td></tr>
+          <tr><td>Poisson Corail en Fusion</td><td class="price">550 &#128178;</td><td style="color:var(--muted);">+25/cm</td></tr>
+          <tr><td>Poisson d'Obsidienne</td><td class="price">600 &#128178;</td><td style="color:var(--muted);">+15/cm</td></tr>
+          <tr><td>Anthias de Lave</td><td class="price">700 &#128178;</td><td style="color:var(--muted);">+20/cm</td></tr>
+          <tr><td>Anguille de Feu</td><td class="price orange-val">800 &#128178;</td><td style="color:var(--muted);">+8/cm</td></tr>
+          <tr><td style="color:var(--gold);font-weight:700;">Méduse Dorée</td><td class="price gold-val">2 000 &#128178;</td><td style="color:var(--gold);">+120/cm</td></tr>
+          <tr><td rowspan="2"><span class="badge badge-purple">Vide</span></td>
+            <td style="color:#DC143C;">Poisson Bulle Cramoisi</td><td class="price purple-val">4 000 &#128178;</td><td style="color:var(--muted);">+250/cm</td></tr>
+          <tr><td style="color:#00FA9A;">Crevette Biscornue</td><td class="price purple-val">5 000 &#128178;</td><td style="color:var(--muted);">+300/cm</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="dev-note">
+      <strong>&#128295; Bonus taille :</strong> Le prix final = <code>base + (taille_cm × bonus)</code>. Les appâts taille et cannes avec <code>size-multiplier</code> augmentent indirectement les revenus sellfish.
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ═══════════════════ SECTION 5 : JOBS ═══════════════════ -->
+  <section id="jobs">
+    <h1>&#127881; Gains Jobs — Métier Pêcheur</h1>
+
+    <div class="info-box blue">
+      <strong>Métier :</strong> Pêcheur (niveau max 250) — Gain automatique à chaque capture via CustomFishing.
+      Les revenus augmentent avec le niveau grâce à la progression exponentielle configurée.
+    </div>
+
+    <!-- Graphique jobs -->
+    <div class="charts-grid">
+      <div class="chart-box">
+        <div class="chart-title">Revenus Jobs par biome — Comparaison Normal / ★ / ★★</div>
+        <canvas id="chartJobs"></canvas>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">XP Jobs par biome — Progression</div>
+        <canvas id="chartJobsXp"></canvas>
+      </div>
+    </div>
+
+    <!-- Tableau jobs jeu de base -->
+    <h2>Poissons Jeu de Base</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Biome</th><th>Normal &#9679;</th><th>Argenté &#11088;</th><th>Doré &#11088;&#11088;</th><th>XP (Normal)</th><th>XP (★★)</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-blue">Rivière</span></td>
+            <td class="price teal-val">128 &#128178;</td>
+            <td class="price" style="color:#C0C0C0;">256 &#128178;</td>
+            <td class="price gold-val">512 &#128178;</td>
+            <td>80 XP</td><td>320 XP</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-blue">Océan</span></td>
+            <td class="price teal-val">188 &#128178;</td>
+            <td class="price" style="color:#C0C0C0;">376 &#128178;</td>
+            <td class="price gold-val">752 &#128178;</td>
+            <td>118 XP</td><td>470 XP</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-orange">Océan chaud</span></td>
+            <td class="price teal-val">248 &#128178;</td>
+            <td class="price" style="color:#C0C0C0;">496 &#128178;</td>
+            <td class="price gold-val">992 &#128178;</td>
+            <td>155 XP</td><td>620 XP</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-teal">Marais</span></td>
+            <td class="price teal-val">300 &#128178;</td>
+            <td class="price" style="color:#C0C0C0;">600 &#128178;</td>
+            <td class="price gold-val">1 200 &#128178;</td>
+            <td>188 XP</td><td>750 XP</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-gray">Grotte</span></td>
+            <td class="price teal-val">500 &#128178;</td>
+            <td class="price" style="color:#C0C0C0;">1 000 &#128178;</td>
+            <td class="price gold-val">2 000 &#128178;</td>
+            <td>313 XP</td><td>1 250 XP</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-red">Lave</span></td>
+            <td class="price teal-val">720 &#128178;</td>
+            <td class="price" style="color:#C0C0C0;">1 440 &#128178;</td>
+            <td class="price gold-val">2 880 &#128178;</td>
+            <td>450 XP</td><td>1 800 XP</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Tableau jobs fishing_pack -->
+    <h2>Poissons Fishing Pack</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Biome</th><th>Poisson</th><th>Revenu &#128178;</th><th>XP</th><th>Points</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="5"><span class="badge badge-blue">Rivière</span></td>
+            <td>Truite · Poisson Vert · Barbus Rosé · Barbus Vert</td><td class="price teal-val">128</td><td>80</td><td>160</td></tr>
+          <tr><td>Poisson Bulle</td><td class="price teal-val">140</td><td>88</td><td>175</td></tr>
+          <tr><td colspan="3" style="display:none;"></td></tr>
+          <tr><td colspan="3" style="display:none;"></td></tr>
+          <tr><td colspan="3" style="display:none;"></td></tr>
+          <tr><td rowspan="5"><span class="badge badge-blue">Océan</span></td>
+            <td>Dorade · Grenadier Bleu · Thon</td><td class="price teal-val">188–192</td><td>118–120</td><td>235–240</td></tr>
+          <tr><td>Anguille Bleue</td><td class="price teal-val">196</td><td>123</td><td>245</td></tr>
+          <tr><td>Raie</td><td class="price teal-val">200</td><td>125</td><td>250</td></tr>
+          <tr><td colspan="3" style="display:none;"></td></tr>
+          <tr><td colspan="3" style="display:none;"></td></tr>
+          <tr><td rowspan="8"><span class="badge badge-orange">Océan chaud</span></td>
+            <td>Crevette · Chromis · Méduse</td><td class="price teal-val">248–252</td><td>155–158</td><td>310–315</td></tr>
+          <tr><td>Anthias</td><td class="price teal-val">256</td><td>160</td><td>320</td></tr>
+          <tr><td>Étoile de Mer · Poisson Lune</td><td class="price teal-val">260</td><td>163</td><td>325</td></tr>
+          <tr><td style="color:var(--gold);">Perle</td><td class="price gold-val">1 200</td><td>750</td><td>1 500</td></tr>
+          <tr><td colspan="3" style="display:none;"></td></tr>
+          <tr><td colspan="3" style="display:none;"></td></tr>
+          <tr><td colspan="3" style="display:none;"></td></tr>
+          <tr><td colspan="3" style="display:none;"></td></tr>
+          <tr><td><span class="badge badge-teal">Marais</span></td>
+            <td>Poisson Visqueux</td><td class="price teal-val">300</td><td>188</td><td>375</td></tr>
+          <tr><td rowspan="2"><span class="badge badge-gray">Grotte</span></td>
+            <td>Poisson des Glaces</td><td class="price blue-val">600</td><td>375</td><td>750</td></tr>
+          <tr><td style="color:var(--purple);">Poisson Gemme</td><td class="price purple-val">800</td><td>500</td><td>1 000</td></tr>
+          <tr><td rowspan="6"><span class="badge badge-red">Lave</span></td>
+            <td>Truite de Magma</td><td class="price">720</td><td>450</td><td>900</td></tr>
+          <tr><td>Poisson Corail en Fusion</td><td class="price">760</td><td>475</td><td>950</td></tr>
+          <tr><td>Poisson d'Obsidienne</td><td class="price">800</td><td>500</td><td>1 000</td></tr>
+          <tr><td>Anthias de Lave</td><td class="price">840</td><td>525</td><td>1 050</td></tr>
+          <tr><td>Anguille de Feu</td><td class="price orange-val">880</td><td>550</td><td>1 100</td></tr>
+          <tr><td style="color:var(--gold);">Méduse Dorée</td><td class="price gold-val">1 600</td><td>1 000</td><td>2 000</td></tr>
+          <tr><td rowspan="2"><span class="badge badge-purple">Vide</span></td>
+            <td style="color:#DC143C;">Poisson Bulle Cramoisi</td><td class="price purple-val">1 400</td><td>875</td><td>1 750</td></tr>
+          <tr><td style="color:#00FA9A;">Crevette Biscornue</td><td class="price purple-val">1 520</td><td>950</td><td>1 900</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Spéciaux -->
+    <h2>Spéciaux</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Poisson</th><th>Revenu</th><th>XP</th><th>Points</th></tr></thead>
+        <tbody>
+          <tr><td style="color:var(--purple);">Poisson Arc-en-Ciel</td><td class="price purple-val">320</td><td>200</td><td>400</td></tr>
+          <tr><td style="color:var(--cyan);">Coeur de la Mer</td><td class="price cyan-val">2 000</td><td>1 250</td><td>2 500</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Tableau kill -->
+    <h2>Tuer des créatures aquatiques</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Créature</th><th>Revenu</th><th>XP</th></tr></thead>
+        <tbody>
+          <tr><td>Cabillaud (Cod)</td><td class="price teal-val">5.6</td><td>3.5</td></tr>
+          <tr><td>Saumon</td><td class="price teal-val">8</td><td>5</td></tr>
+          <tr><td>Poisson Tropical</td><td class="price teal-val">10</td><td>6.2</td></tr>
+          <tr><td>Poisson-globe</td><td class="price teal-val">10</td><td>6.2</td></tr>
+          <tr><td>Calmar</td><td class="price teal-val">8</td><td>5</td></tr>
+          <tr><td>Calmar Lumineux</td><td class="price teal-val">12</td><td>7.5</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="dev-note">
+      <strong>&#128295; Équation de progression :</strong>
+      <br>Revenu = <code>baseincome × (1 + 0.01 × level × exp(-0.005 × level) + 0.003 × level)</code>
+      <br>XP = <code>baseXP × (1 + (level-1) × 0.01)</code>
+      <br>Niveau suivant = <code>10 × level + level² × 4</code>
+    </div>
+
+    <!-- Synthèse revenus estimés -->
+    <h2>Synthèse — Revenus Estimés / Heure</h2>
+    <p style="font-size:12px;">Estimation à 200 lancers/heure, niveau 1, sans appât.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Biome</th><th>Revenu Jobs /h</th><th>Revenu Sellfish /h</th><th>Total estimé /h</th><th>Difficulté d'accès</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-blue">Rivière</span></td>
+            <td class="teal-val">~25 600 &#128178;</td>
+            <td class="blue-val">~10 000 &#128178;</td>
+            <td class="price">~35 600 &#128178;</td>
+            <td><span class="badge badge-teal">Facile</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-blue">Océan</span></td>
+            <td class="teal-val">~37 600 &#128178;</td>
+            <td class="blue-val">~15 000 &#128178;</td>
+            <td class="price">~52 600 &#128178;</td>
+            <td><span class="badge badge-teal">Facile</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-orange">Océan chaud</span></td>
+            <td class="teal-val">~49 600 &#128178;</td>
+            <td class="blue-val">~20 000 &#128178;</td>
+            <td class="price">~69 600 &#128178;</td>
+            <td><span class="badge badge-blue">Moyen</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-teal">Marais</span></td>
+            <td class="teal-val">~60 000 &#128178;</td>
+            <td class="blue-val">~24 000 &#128178;</td>
+            <td class="price">~84 000 &#128178;</td>
+            <td><span class="badge badge-blue">Moyen</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-gray">Grotte</span></td>
+            <td class="teal-val">~100 000 &#128178;</td>
+            <td class="blue-val">~40 000 &#128178;</td>
+            <td class="price">~140 000 &#128178;</td>
+            <td><span class="badge badge-orange">Difficile</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-red">Lave</span></td>
+            <td class="teal-val">~144 000 &#128178;</td>
+            <td class="blue-val">~58 000 &#128178;</td>
+            <td class="price gold-val">~202 000 &#128178;</td>
+            <td><span class="badge badge-red">Très difficile</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-purple">Vide</span></td>
+            <td class="teal-val">~290 000 &#128178;</td>
+            <td class="blue-val">~900 000 &#128178;</td>
+            <td class="price purple-val">~1 190 000 &#128178;</td>
+            <td><span class="badge badge-red">Endgame</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  Documentation Pêche — CustomFishing + ItemsAdder + Jobs + zMenu &nbsp;|&nbsp; Généré automatiquement
+</footer>
+
+<script>
+const chartDefaults = {
+  responsive: true,
+  plugins: { legend: { labels: { color: '#8b949e', font: { size: 11 } } } },
+  scales: {
+    x: { ticks: { color: '#8b949e', font: { size: 11 } }, grid: { color: '#21262d' } },
+    y: { ticks: { color: '#8b949e', font: { size: 11 } }, grid: { color: '#21262d' } }
+  }
+};
+
+// Chart 1 — Bonus étoiles appâts
+new Chart(document.getElementById('chartBait'), {
+  type: 'bar',
+  data: {
+    labels: ['Commun', 'Rare', 'Épique', 'Légendaire'],
+    datasets: [
+      { label: '★ Argent', data: [3, 6, 8, 10], backgroundColor: 'rgba(192,192,192,0.7)', borderColor: '#C0C0C0', borderWidth: 1 },
+      { label: '★★ Or', data: [0, 0, 3, 6], backgroundColor: 'rgba(210,153,34,0.7)', borderColor: '#d29922', borderWidth: 1 }
+    ]
+  },
+  options: { ...chartDefaults, plugins: { ...chartDefaults.plugins, tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: +${ctx.raw}` } } } }
+});
+
+// Chart 2 — Réduction attente appâts
+new Chart(document.getElementById('chartBaitTime'), {
+  type: 'bar',
+  data: {
+    labels: ['Ver', 'Magnétique', 'Rare', 'Épique', 'Légendaire'],
+    datasets: [{
+      label: 'Réduction (%)',
+      data: [8, 10, 5, 10, 20],
+      backgroundColor: ['rgba(57,208,216,.6)', 'rgba(57,208,216,.6)', 'rgba(88,166,255,.6)', 'rgba(188,140,255,.6)', 'rgba(240,136,62,.6)'],
+      borderColor: ['#39d0d8','#39d0d8','#58a6ff','#bc8cff','#f0883e'],
+      borderWidth: 1
+    }]
+  },
+  options: { ...chartDefaults, plugins: { ...chartDefaults.plugins, tooltip: { callbacks: { label: ctx => ` -${ctx.raw}% temps d'attente` } } } }
+});
+
+// Chart 3 — Sellfish par biome
+new Chart(document.getElementById('chartSellfish'), {
+  type: 'bar',
+  data: {
+    labels: ['Rivière', 'Océan', 'Océan chaud', 'Marais', 'Grotte', 'Lave'],
+    datasets: [
+      { label: 'Normal ●', data: [50, 75, 100, 120, 200, 290], backgroundColor: 'rgba(139,148,158,.5)', borderColor: '#8b949e', borderWidth: 1 },
+      { label: 'Argenté ★', data: [100, 150, 200, 240, 400, 580], backgroundColor: 'rgba(192,192,192,.6)', borderColor: '#C0C0C0', borderWidth: 1 },
+      { label: 'Doré ★★', data: [200, 300, 400, 480, 800, 1150], backgroundColor: 'rgba(210,153,34,.7)', borderColor: '#d29922', borderWidth: 1 }
+    ]
+  },
+  options: { ...chartDefaults, plugins: { ...chartDefaults.plugins, tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.raw} ` } } } }
+});
+
+// Chart 4 — Sellfish fishing_pack
+new Chart(document.getElementById('chartSellfishPack'), {
+  type: 'bar',
+  data: {
+    labels: ['Rivière', 'Océan', 'Oc. chaud', 'Marais', 'Grotte', 'Lave moy.', 'Vide'],
+    datasets: [{
+      label: 'Valeur sellfish',
+      data: [105, 115, 250, 250, 1250, 858, 4500],
+      backgroundColor: ['rgba(88,166,255,.5)','rgba(88,166,255,.6)','rgba(240,136,62,.5)','rgba(63,185,80,.5)','rgba(139,148,158,.5)','rgba(248,81,73,.5)','rgba(188,140,255,.6)'],
+      borderColor: ['#58a6ff','#58a6ff','#f0883e','#3fb950','#8b949e','#f85149','#bc8cff'],
+      borderWidth: 1
+    }]
+  },
+  options: { ...chartDefaults, plugins: { ...chartDefaults.plugins, tooltip: { callbacks: { label: ctx => ` Moy: ${ctx.raw} ` } } }, plugins2: {} }
+});
+
+// Chart 5 — Jobs par biome
+new Chart(document.getElementById('chartJobs'), {
+  type: 'bar',
+  data: {
+    labels: ['Rivière', 'Océan', 'Océan chaud', 'Marais', 'Grotte', 'Lave'],
+    datasets: [
+      { label: 'Normal ●', data: [128, 188, 248, 300, 500, 720], backgroundColor: 'rgba(63,185,80,.4)', borderColor: '#3fb950', borderWidth: 1 },
+      { label: 'Argenté ★', data: [256, 376, 496, 600, 1000, 1440], backgroundColor: 'rgba(192,192,192,.5)', borderColor: '#C0C0C0', borderWidth: 1 },
+      { label: 'Doré ★★', data: [512, 752, 992, 1200, 2000, 2880], backgroundColor: 'rgba(210,153,34,.6)', borderColor: '#d29922', borderWidth: 1 }
+    ]
+  },
+  options: { ...chartDefaults, plugins: { ...chartDefaults.plugins, tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.raw} ` } } } }
+});
+
+// Chart 6 — XP par biome
+new Chart(document.getElementById('chartJobsXp'), {
+  type: 'radar',
+  data: {
+    labels: ['Rivière', 'Océan', 'Océan chaud', 'Marais', 'Grotte', 'Lave'],
+    datasets: [
+      { label: 'XP Normal', data: [80, 118, 155, 188, 313, 450], borderColor: '#3fb950', backgroundColor: 'rgba(63,185,80,.15)', pointBackgroundColor: '#3fb950' },
+      { label: 'XP Doré ★★', data: [320, 470, 620, 750, 1250, 1800], borderColor: '#d29922', backgroundColor: 'rgba(210,153,34,.1)', pointBackgroundColor: '#d29922' }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { labels: { color: '#8b949e', font: { size: 11 } } } },
+    scales: { r: { ticks: { color: '#8b949e', backdropColor: 'transparent', font: { size: 10 } }, grid: { color: '#21262d' }, pointLabels: { color: '#8b949e', font: { size: 11 } } } }
+  }
+});
+</script>
+</body>
+</html>
